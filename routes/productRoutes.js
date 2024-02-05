@@ -18,8 +18,7 @@ productRoutes.get("/getone/:id", getOne);
 productRoutes.get("/getall", getAll);
 productRoutes.patch("/:id", upload.single("image"),  authenticateUser,
 authorizeUser(["admin"]), updateProduct);
-productRoutes.post("/create", upload.single("image"), authenticateUser,
-authorizeUser(["admin,userAuth"]), createProduct);
+productRoutes.post("/create", upload.single("image"),createProduct);
 productRoutes.delete("/thanos", deleteAll);
 productRoutes.delete("/:id",  authenticateUser,
 authorizeUser(["admin"]), deleteProduct);

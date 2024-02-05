@@ -21,6 +21,8 @@ export const getOne = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const products = await ProductSchema.find();
+     // Check if an image is present in the request
+
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -53,21 +55,47 @@ export const updateProduct = async (req, res) => {
 };
 
 // Create a new product
-
 export const createProduct = async (req, res) => {
   try {
-    const product = await ProductSchema.create({
-      title: req.body.title,
-      price: req.body.price,
-      image: req.file ? req.file.path : '', 
-      description: req.body.description,
+    const { title, price, description } = req.body;
+    const image = req.file?.path;
+
+    // Check if an image is present in the request
+    if (!image) {
+      return res.status(400).json({ message: "Image is required for creating a product." });
+    }
+
+    const newProduct = new ProductSchema({
+      title: title,
+      price: price,
+      image: image,
+      description: description,
     });
 
-    res.status(201).json(product);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    await newProduct.save();
+    res.status(200).json({ message: "Product added successfully!", product: newProduct });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Problem adding product", error: err });
   }
 };
+
+
+
+// export const createProduct = async (req, res) => {
+//   try {
+//     const product = await ProductSchema.create({
+//       title: req.body.title,
+//       price: req.body.price,
+//       image: req.file ? req.file.path : '', 
+//       description: req.body.description,
+//     });
+
+//     res.status(201).json(product);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
 // Delete all products
 export const deleteAll = async (req, res) => {

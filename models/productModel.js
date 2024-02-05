@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import slugify from "slugify";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 const productModelSchema = new mongoose.Schema(
   {
@@ -14,7 +13,7 @@ const productModelSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
    
     description: {
@@ -25,12 +24,7 @@ const productModelSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-productModelSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
-  next();
-});
-
-const ProductSchema = mongoose.model("ProductSchema", productModelSchema);
+const ProductSchema = mongoose.model('ProductSchema', productModelSchema);
 
 export default ProductSchema;
 

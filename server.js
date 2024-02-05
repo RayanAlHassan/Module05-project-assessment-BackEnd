@@ -4,8 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import {userRoutes} from './routes/userRoutes.js';  // update import statement
 import {productRoutes} from "./routes/productRoutes.js";
-// import { subCategoryRouter } from "./routes/subCategoryRoutes.js";
-// import { categoryRouter } from "./routes/categoryRoutes.js";
+
 import {orderRoutes} from "./routes/orderRoutes.js";
 import cookieParser from "cookie-parser";
 dotenv.config();
@@ -22,8 +21,7 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-app.use(express.static("images"));
-
+app.use("/images", express.static("images"));
 app.use("/user",userRoutes);
 app.use("/product", productRoutes);
 // app.use("/subCategory", subCategoryRouter);
